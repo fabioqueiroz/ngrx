@@ -61,7 +61,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   productSelected(product: Product): void {
-    this._productService.changeSelectedProduct(product);
+    this._productService.changeSelectedProduct(product); 
   }
 
 }
