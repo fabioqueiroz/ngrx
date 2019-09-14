@@ -1,5 +1,11 @@
 import { JsonPipe } from "@angular/common";
 import { Product } from "../product";
+import * as fromRoot from '../../state/app.state';
+
+// extend the app state for lazy loaded features
+export interface State extends fromRoot.State{
+    products: ProductState; 
+}
 
 export interface ProductState {
     showProductCode: boolean;
