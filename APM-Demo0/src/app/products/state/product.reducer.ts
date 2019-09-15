@@ -1,6 +1,7 @@
 import { JsonPipe } from "@angular/common";
 import { Product } from "../product";
 import * as fromRoot from '../../state/app.state';
+import { InitialState } from "@ngrx/store/src/models";
 
 // extend the app state for lazy loaded features
 export interface State extends fromRoot.State{
@@ -13,7 +14,14 @@ export interface ProductState {
     products: Product[];
 }
 
-export function reducer(state: ProductState, action): ProductState {
+// ensures the state in the reducer is initialized
+const initialState: ProductState = {
+    showProductCode: true,
+    currentProduct: null,
+    products: []
+};
+
+export function reducer(state = initialState, action): ProductState {
 
     switch(action.type) {
         
