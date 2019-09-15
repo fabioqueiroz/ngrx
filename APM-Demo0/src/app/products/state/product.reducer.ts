@@ -15,6 +15,7 @@ export interface ProductState {
 }
 
 // ensures the state in the reducer is initialized
+
 const initialState: ProductState = {
     showProductCode: true,
     currentProduct: null,
