@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../../state/app.state';
+import * as fromRoot from '../state/product.reducer';
 
 @Component({
   selector: 'pm-product-list',
