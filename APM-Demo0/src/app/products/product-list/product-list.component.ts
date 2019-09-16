@@ -37,12 +37,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
     );
     
     // to be unsubscribed
-    this._store.pipe(select('products')).subscribe(products => {
+    // without a selector
+    // this._store.pipe(select('products')).subscribe(products => {
 
-      if (products) {
-        this.displayCode = products.showProductCode;
-      }
-    });
+    //   if (products) {
+    //     this.displayCode = products.showProductCode;
+    //   }
+    // });
+
+    // using a selector
+    this._store.pipe(select(fromRoot.getShowProductCode)).subscribe(showProductCode =>
+      this.displayCode = showProductCode
+      );
   }
 
   ngOnDestroy(): void {
