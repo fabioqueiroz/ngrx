@@ -3,6 +3,7 @@ import { Product } from "../product";
 import * as fromRoot from '../../state/app.state';
 import { InitialState } from "@ngrx/store/src/models";
 import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { ProductActions, ToggleProductCode, ProductActionTypes } from "./product.actions";
 
 // extend the app state for lazy loaded features
 export interface State extends fromRoot.State{
@@ -32,11 +33,11 @@ export const getCurrentProduct = createSelector(getProductFeatureState, state =>
 export const getProducts = createSelector(getProductFeatureState, state => state.products);
 
 
-export function reducer(state = initialState, action): ProductState {
+export function reducer(state = initialState, action: ProductActions): ProductState {
 
     switch(action.type) {
         
-        case 'TOGGLE_PRODUCT_CODE':
+        case ProductActionTypes.ToggleProductCode:
 
             return {
                 ...state,
