@@ -23,13 +23,22 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
+  
+  // not being used since the service was replaced by ngrx
   sub: Subscription;
 
   constructor(private _productService: ProductService, private _store: Store<fromRoot.State>) { }
 
   ngOnInit(): void {
-    this.sub = this._productService.selectedProductChanges$.subscribe(
-      selectedProduct => this.selectedProduct = selectedProduct
+    // replaced by ngrx
+    // this.sub = this._productService.selectedProductChanges$.subscribe(
+    //   selectedProduct => this.selectedProduct = selectedProduct
+    // );
+
+    // TODO: unsibscribe
+    // using ngrx instead of the service
+    this._store.pipe(select(fromRoot.getCurrentProduct)).subscribe(
+      currentProduct => this.selectedProduct = currentProduct
     );
 
     this._productService.getProducts().subscribe(
@@ -53,7 +62,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
 
   checkChanged(value: boolean): void {
@@ -72,11 +81,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   newProduct(): void {
-    this._productService.changeSelectedProduct(this._productService.newProduct());
+    // this._productService.changeSelectedProduct(this._productService.newProduct());
+
+    // using ngrx instead of the service
+    this._store.dispatch(new productActions.InitializeCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this._productService.changeSelectedProduct(product); 
+    // this._productService.changeSelectedProduct(product); 
+
+    // using ngrx instead of the service
+    this._store.dispatch(new productActions.SetCurrentProduct(product));
   }
 
 }
