@@ -13,11 +13,13 @@ export class ProductService {
   private productsUrl = 'api/products';
   private products: Product[];
 
+  // P7 - not being used since we are using action and selectors instead
   private selectedProductSource = new BehaviorSubject<Product | null>(null);
   selectedProductChanges$ = this.selectedProductSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
+  // P7 - not being used since we are using action and selectors instead
   changeSelectedProduct(selectedProduct: Product | null): void {
     this.selectedProductSource.next(selectedProduct);
   }
@@ -34,6 +36,8 @@ export class ProductService {
       );
   }
 
+  // *** P7 - not being used since we are using action and selectors
+  // instead as is is being initialized by the reducer ***
   // Return an initialized product
   newProduct(): Product {
     return {

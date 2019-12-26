@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { Store, select } from '@ngrx/store';
-import * as fromRoot from '../state/product.reducer';
+import * as fromProduct from '../state/product.reducer';
 import * as productActions from '../state/product.actions';
 
 @Component({
@@ -23,11 +23,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
-  
+
   // not being used since the service was replaced by ngrx
   sub: Subscription;
 
-  constructor(private _productService: ProductService, private _store: Store<fromRoot.State>) { }
+  constructor(private _productService: ProductService, private _store: Store<fromProduct.State>) { }
 
   ngOnInit(): void {
     // replaced by ngrx
@@ -35,9 +35,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //   selectedProduct => this.selectedProduct = selectedProduct
     // );
 
-    // TODO: unsibscribe
+    // TODO: unsubscribe
     // using ngrx instead of the service
-    this._store.pipe(select(fromRoot.getCurrentProduct)).subscribe(
+    this._store.pipe(select(fromProduct.getCurrentProduct)).subscribe(
       currentProduct => this.selectedProduct = currentProduct
     );
 
@@ -45,7 +45,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       (products: Product[]) => this.products = products,
       (err: any) => this.errorMessage = err.error
     );
-    
+
     // to be unsubscribed
     // without a selector
     // this._store.pipe(select('products')).subscribe(products => {
@@ -56,7 +56,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // });
 
     // using a selector
-    this._store.pipe(select(fromRoot.getShowProductCode)).subscribe(showProductCode =>
+    this._store.pipe(select(fromProduct.getShowProductCode)).subscribe(showProductCode =>
       this.displayCode = showProductCode
       );
   }
@@ -88,7 +88,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   productSelected(product: Product): void {
-    // this._productService.changeSelectedProduct(product); 
+    // this._productService.changeSelectedProduct(product);
 
     // using ngrx instead of the service
     this._store.dispatch(new productActions.SetCurrentProduct(product));
