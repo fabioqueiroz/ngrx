@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { Store, select } from '@ngrx/store';
 import * as fromProduct from '../state/product.reducer';
 import * as productActions from '../state/product.actions';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'pm-product-list',
@@ -26,6 +27,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // not being used since the service was replaced by ngrx
   sub: Subscription;
+  // used to check subscription with ngrx effects
+  componentActive = true;
+  products$: Observable<Product[]>;
+
 
   constructor(private _productService: ProductService, private _store: Store<fromProduct.State>) { }
 
@@ -50,8 +55,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // P8-2 - replaced product service with ngrx effects
     this._store.dispatch(new productActions.Load);
     
-    this._store.pipe(select(fromProduct.getProducts))
-      .subscribe((products: Product[]) => this.products = products);
+    // this._store.pipe(select(fromProduct.getProducts),
+    //   takeWhile(() => this.componentActive)) 
+    //   .subscribe((products: Product[]) => this.products = products);
+    
+    // P8-3 - unsubscribing using ngrx effects
+    this.products$ = this._store.pipe(select(fromProduct.getProducts));
 
     // to be unsubscribed
     // without a selector
@@ -70,6 +79,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // this.sub.unsubscribe();
+
+    // P8-3 - unsubscribing using ngrx effects
+    this.componentActive = false;
   }
 
   checkChanged(value: boolean): void {
