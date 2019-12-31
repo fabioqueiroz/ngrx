@@ -41,10 +41,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
       currentProduct => this.selectedProduct = currentProduct
     );
 
-    this._productService.getProducts().subscribe(
-      (products: Product[]) => this.products = products,
-      (err: any) => this.errorMessage = err.error
-    );
+    // before using ngrx effects
+    // this._productService.getProducts().subscribe(
+    //   (products: Product[]) => this.products = products,
+    //   (err: any) => this.errorMessage = err.error
+    // );
+
+    // P8-2 - replaced product service with ngrx effects
+    this._store.dispatch(new productActions.Load);
+    
+    this._store.pipe(select(fromProduct.getProducts))
+      .subscribe((products: Product[]) => this.products = products);
 
     // to be unsubscribed
     // without a selector
