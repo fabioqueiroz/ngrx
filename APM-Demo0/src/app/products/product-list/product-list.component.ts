@@ -30,6 +30,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // used to check subscription with ngrx effects
   componentActive = true;
   products$: Observable<Product[]>;
+  errorMessage$: Observable<string>;
 
 
   constructor(private _productService: ProductService, private _store: Store<fromProduct.State>) { }
@@ -51,6 +52,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //   (products: Product[]) => this.products = products,
     //   (err: any) => this.errorMessage = err.error
     // );
+
+    this.errorMessage$ = this._store.pipe(select(fromProduct.getError));
 
     // P8-2 - replaced product service with ngrx effects
     this._store.dispatch(new productActions.Load);
