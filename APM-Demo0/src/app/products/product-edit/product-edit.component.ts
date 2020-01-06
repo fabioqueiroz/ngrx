@@ -170,13 +170,16 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             (err: any) => this.errorMessage = err.error
           );
         } else {
-          this.productService.updateProduct(p).subscribe(
-            // product => this.productService.changeSelectedProduct(product),
+          // this.productService.updateProduct(p).subscribe(
+          //   // product => this.productService.changeSelectedProduct(product),
 
-            // using ngrx instead of the service
-            product => this._store.dispatch(new productActions.SetCurrentProduct(product)),
-            (err: any) => this.errorMessage = err.error
-          );
+          //   // using ngrx instead of the service
+          //   product => this._store.dispatch(new productActions.SetCurrentProduct(product)),
+          //   (err: any) => this.errorMessage = err.error
+          // );
+
+          // modified in P9
+          this._store.dispatch(new productActions.UpdateProduct(p));
         }
       }
     } else {
