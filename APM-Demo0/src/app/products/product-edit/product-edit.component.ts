@@ -12,6 +12,8 @@ import { Store, select } from '@ngrx/store';
 import * as fromProduct from '../state/product.reducer';
 import * as productActions from '../state/product.actions';
 
+import { takeWhile } from 'rxjs/operators';
+
 @Component({
   selector: 'pm-product-edit',
   templateUrl: './product-edit.component.html',
@@ -25,6 +27,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   product: Product | null;
   // not being used since the service was replaced by ngrx
   sub: Subscription;
+
+  // used to check subscription with ngrx effects
+  componentActive = true;
 
   // Use with the generic validation message class
   displayMessage: { [key: string]: string } = {};
@@ -72,9 +77,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     //   selectedProduct => this.displayProduct(selectedProduct)
     // );
 
-    // TODO: to unsubscribe
+    // TODO: to unsubscribe - solved in P8 with takeWhile() below
     // using ngrx instead of the service
-    this._store.pipe(select(fromProduct.getCurrentProduct)).subscribe(
+    this._store.pipe(select(fromProduct.getCurrentProduct),
+      takeWhile(() => this.componentActive))
+      .subscribe(
       currentProduct => this.displayProduct(currentProduct)
     );
 
@@ -86,6 +93,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // this.sub.unsubscribe();
+    this.componentActive = false;
   }
 
   // Also validate on blur
