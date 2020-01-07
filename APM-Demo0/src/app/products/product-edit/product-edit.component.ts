@@ -136,13 +136,16 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   deleteProduct(): void {
     if (this.product && this.product.id) {
       if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-        this.productService.deleteProduct(this.product.id).subscribe(
-          // () => this.productService.changeSelectedProduct(null),
+        // this.productService.deleteProduct(this.product.id).subscribe(
+        //   // () => this.productService.changeSelectedProduct(null),
 
-          // using ngrx instead of the service
-          () => this._store.dispatch(new productActions.ClearCurrentProduct()),
-          (err: any) => this.errorMessage = err.error
-        );
+        //   // using ngrx instead of the service
+        //   () => this._store.dispatch(new productActions.ClearCurrentProduct()),
+        //   (err: any) => this.errorMessage = err.error
+        // );
+
+        // P9
+        this._store.dispatch(new productActions.DeleteProduct(this.product.id));
       }
     } else {
       // No need to delete, it was never saved
